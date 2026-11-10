@@ -56,7 +56,7 @@ class Settings:
             vk_group_token=os.getenv("VK_GROUP_TOKEN", ""),
             vk_group_id=int(os.getenv("VK_GROUP_ID", "0")),
             proxyapi_key=os.getenv("PROXYAPI_KEY", ""),
-            gemini_model=os.getenv("GEMINI_MODEL", "gemini-2.5-flash"),
+            gemini_model=os.getenv("GEMINI_MODEL", "gemini-3.5-flash"),
             proxyapi_base_url=os.getenv(
                 "PROXYAPI_BASE_URL", "https://api.proxyapi.ru"
             ),

@@ -309,11 +309,20 @@ async def handle_chat_message(
         context = memory.build_context(dialog)
         mode = CommunicationMode.from_str(dialog.mode)
         reply = await ai.generate_reply(context, mode)
-    except AIUnavailableError:
-        logger.warning("AI недоступен для пользователя %s", user_id)
+    except AIUnavailableError as e:
+        logger.error(
+            "AI недоступен для пользователя %s: %s", user_id, e
+        )
+        # Вместо удаления заглушки — редактируем её в текст fallback,
+        # чтобы сообщение не оставалось висеть в чате.
+        stop_typing.set()
+        if typing_task is not None:
+            await typing_task
+        fallback = fallback_text(str(e))
         if placeholder is not None:
-            await placeholder.abort()
-        await message.answer(fallback_text(), keyboard=main_menu_kb())
+            await placeholder.finalize(fallback, keyboard=main_menu_kb())
+        else:
+            await message.answer(fallback, keyboard=main_menu_kb())
         await dialogs.save(state)
         return
     finally:

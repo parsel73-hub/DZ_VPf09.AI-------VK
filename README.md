@@ -104,7 +104,7 @@ Copy-Item .env.example .env
 |---|---|---|
 | `VK_GROUP_TOKEN` | — | Токен группы ВК (**обязательно**) |
 | `PROXYAPI_KEY` | — | Ключ ProxyAPI (**обязательно**) |
-| `GEMINI_MODEL` | `gemini-2.5-flash` | Модель (список: proxyapi.ru/models/google) |
+| `GEMINI_MODEL` | `gemini-3.5-flash` | Модель (список: proxyapi.ru/models/google) |
 | `PROXYAPI_BASE_URL` | `https://api.proxyapi.ru` | Базовый адрес провайдера |
 | `GOOGLE_API_VERSION` | `v1beta` | Версия формата Google API |
 | `GEMINI_TEMPERATURE` | `0.7` | Температура генерации |
@@ -179,7 +179,7 @@ Copy-Item .env.example .env
 
 ```python
 response = await self._client.aio.models.generate_content(
-    model="gemini-2.5-flash",
+    model="gemini-3.5-flash",
     contents=[Content(role="user", parts=[Part(text="Привет!")])],
     config=GenerateContentConfig(
         system_instruction=COMMUNICATION_MODES["programmer"]["system_prompt"],

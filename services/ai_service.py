@@ -123,9 +123,19 @@ class AIService:
             if attempt <= self._retries:
                 await asyncio.sleep(1.5 * attempt)  # простой backoff
 
-        raise AIUnavailableError(
-            f"Gemini API недоступен после {self._retries + 1} попыток"
-        ) from last_error
+        # Причина последней ошибки — в текст исключения, чтобы пользователь
+        # видел её в fallback-сообщении, а админ — в логах.
+        reason = (
+            f"{type(last_error).__name__}: {last_error}"
+            if last_error
+            else "неизвестная ошибка"
+        )
+        logger.error(
+            "Gemini API недоступен после %d попыток. Последняя ошибка: %s",
+            self._retries + 1,
+            reason,
+        )
+        raise AIUnavailableError(reason) from last_error
 
     # ── Внутренние методы ────────────────────────────────────────────
 
